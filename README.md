@@ -1,6 +1,6 @@
 # Iowa House Price Prediction
 
-本專案使用 Iowa 房價資料，以指定的 47 個 features 建立可重現的 EDA 與線性模型流程。正式建模 target 為 `log1p(SalePrice)`，並比較 OLS、Ridge 與 Lasso。
+This project uses the Iowa house-price dataset to build a reproducible exploratory data analysis and linear-modeling workflow with a specified set of 47 features. The modeling target is `log1p(SalePrice)`, and the candidate models are OLS, Ridge, and Lasso.
 
 ## Repository structure
 
@@ -18,16 +18,16 @@ Iowa_House_Price_Prediction/
 ## Modeling specification
 
 - 2,908 observations
-- 47 regressors：21 numerical features、1 ordinal `BsmtQual`、25 `Neighborhood` indicators
-- Split：1,800 training、600 validation、508 test observations
-- Target：`log1p(SalePrice)`
-- Models：OLS、Ridge（α = 0.10、0.30、0.60）、Lasso（α = 0.02、0.06、0.10）
-- Primary metrics：MSE、RMSE、MAE、R²，均在 log-price scale 計算
-- Model selection：只使用 validation MSE；test set 只評估選定的 final model
+- 47 regressors: 21 numerical features, one ordinal `BsmtQual` feature, and 25 `Neighborhood` indicators
+- Split: 1,800 training, 600 validation, and 508 test observations
+- Target: `log1p(SalePrice)`
+- Models: OLS, Ridge (α = 0.10, 0.30, 0.60), and Lasso (α = 0.02, 0.06, 0.10)
+- Primary metrics: MSE, RMSE, MAE, and R², all calculated on the log-price scale
+- Model selection: validation MSE only; the test set is used once for the selected final model
 
 ## Setup
 
-需要 Python 3.11。下載 repository 後，在專案根目錄執行：
+Python 3.11 is required. After cloning the repository, run the following commands from the project root:
 
 ```bash
 conda create -n ML python=3.11 -y
@@ -36,24 +36,24 @@ python -m pip install -r requirements.txt
 python -m ipykernel install --user --name ML --display-name "Python (ML)"
 ```
 
-啟動 Jupyter：
+Start JupyterLab:
 
 ```bash
 jupyter lab
 ```
 
-若使用 VS Code，開啟 notebook 後選擇 `Python (ML)` kernel。
+If you use VS Code, open a notebook and select the `Python (ML)` kernel.
 
 ## Run order
 
-1. 執行 `notebooks/01_eda.ipynb`：資料檢查、47-feature construction、單變數分析、target distribution 與 correlation heatmap。
-2. 執行 `notebooks/02_modeling.ipynb`：資料切分、preprocessing、候選模型比較、final test evaluation 與 coefficient analysis。
+1. Run `notebooks/01_eda.ipynb` for data validation, 47-feature construction, univariate analysis against `SalePrice`, the target distribution, and the correlation heatmap.
+2. Run `notebooks/02_modeling.ipynb` for data splitting, preprocessing, candidate-model comparison, final test evaluation, and coefficient analysis.
 
-兩份 notebook 都會從 `data/IA_House_Price_Original_Data.xlsx` 載入資料，並支援從 repository root 或 `notebooks/` 目錄啟動。
+Both notebooks load `data/IA_House_Price_Original_Data.xlsx` and support execution from either the repository root or the `notebooks/` directory.
 
 ## Current result
 
-Validation MSE 最低的模型為 Ridge（α = 0.60）。目前 final test results（log-price scale）：
+Ridge with α = 0.60 has the lowest validation MSE. The current final test results on the log-price scale are:
 
 | Metric | Value |
 |---|---:|
@@ -62,13 +62,12 @@ Validation MSE 最低的模型為 Ridge（α = 0.60）。目前 final test resul
 | MAE | 0.0865 |
 | R² | 0.9083 |
 
-美元尺度的輔助結果：test RMSE 約 `$21,558.74`，test MAE 約 `$15,045.23`。
+For additional interpretation on the dollar scale, the test RMSE is approximately `$21,558.74`, and the test MAE is approximately `$15,045.23`.
 
 ## Reproducibility notes
 
-- `StandardScaler` 僅在 training partition 上 fit，避免 data leakage。
-- 固定 random seed `20260928`，確保資料切分可重現。
-- Excel 原始表頭位於第 4 列，因此 notebook 使用 `skiprows=3`。
-- `BsmtFinSF = BsmtFinSF1 + BsmtFinSF2`。
-- `BsmtQual` 映射為 `Ex=5, Gd=4, TA=3, Fa=2, Po=1, NA=0`。
-
+- `StandardScaler` is fitted only on the relevant training partition to prevent data leakage.
+- The fixed random seed `20260928` makes the data split reproducible.
+- The Excel header begins on the fourth row, so the notebooks use `skiprows=3`.
+- `BsmtFinSF = BsmtFinSF1 + BsmtFinSF2`.
+- `BsmtQual` is mapped as `Ex=5, Gd=4, TA=3, Fa=2, Po=1, NA=0`.
