@@ -10,7 +10,12 @@ Iowa_House_Price_Prediction/
 │   └── IA_House_Price_Original_Data.xlsx
 ├── notebooks/
 │   ├── 01_eda.ipynb
-│   └── 02_modeling.ipynb
+│   ├── 02_modeling.ipynb
+│   └── 02_modeling_new.ipynb
+├── output/
+│   └── pdf/
+│       ├── Iowa_House_Price_Report_WZZ.pdf
+│       └── Iowa_House_Price_Overleaf.zip
 ├── README.md
 └── requirements.txt
 ```
@@ -66,6 +71,29 @@ The final test results on the log-price scale are:
 For additional interpretation on the dollar scale, the test RMSE is approximately $21,545.45, and the test MAE is approximately $14,996.77.
 
 Because the 47-feature design contains exact linear dependencies, the individual OLS coefficients are not uniquely identified. The OLS prediction metrics remain valid, while Ridge with α = 0.60 is used as a stable reference for coefficient interpretation.
+
+The optional application uses 124 N Franklin Ave, Ames, IA 50014. This property is particularly useful because its April 2008 sale appears as an exact observation in the supplied dataset and belongs to the held-out test set under random seed `20260928`.
+
+Using the original 2008 feature values:
+
+| Value | Amount |
+|---|---:|
+| Actual 2008 sale price | $119,000 |
+| OLS prediction | $123,195 |
+| Ridge prediction (α = 0.60) | $122,874 |
+
+The OLS historical prediction is 3.53% above the actual sale price, while the Ridge prediction is 3.26% above it.
+
+After updating the available features to match the current listing:
+
+| Value | Amount |
+|---|---:|
+| Current-feature OLS prediction | $121,869 |
+| Current-feature Ridge prediction (α = 0.60) | $121,451 |
+| 2026 listing price | $246,500 |
+| Zillow Zestimate | $242,000 |
+
+The historical model performs well on the property's 2008 sale but substantially underpredicts its 2026 market value. The model does not include sale year, inflation, or a housing-price index, so this difference illustrates temporal distribution shift rather than simply a poor historical prediction.
 
 ## Reproducibility notes
 
