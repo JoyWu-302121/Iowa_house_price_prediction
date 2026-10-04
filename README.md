@@ -53,16 +53,19 @@ Both notebooks load `data/IA_House_Price_Original_Data.xlsx` and support executi
 
 ## Current result
 
-Ridge with α = 0.60 has the lowest validation MSE. The current final test results on the log-price scale are:
+OLS has the lowest validation MSE (0.014917). Ridge with α = 0.60 is nearly tied, with a validation MSE of 0.014929. Following the predefined model-selection rule, OLS is selected as the final model.
+The final test results on the log-price scale are:
 
 | Metric | Value |
 |---|---:|
-| MSE | 0.0145 |
-| RMSE | 0.1204 |
-| MAE | 0.0865 |
-| R² | 0.9083 |
+| MSE | 0.0144 |
+| RMSE | 0.1201 |
+| MAE | 0.0862 |
+| R² | 0.9087 |
 
-For additional interpretation on the dollar scale, the test RMSE is approximately `$21,558.74`, and the test MAE is approximately `$15,045.23`.
+For additional interpretation on the dollar scale, the test RMSE is approximately $21,545.45, and the test MAE is approximately $14,996.77.
+
+Because the 47-feature design contains exact linear dependencies, the individual OLS coefficients are not uniquely identified. The OLS prediction metrics remain valid, while Ridge with α = 0.60 is used as a stable reference for coefficient interpretation.
 
 ## Reproducibility notes
 
