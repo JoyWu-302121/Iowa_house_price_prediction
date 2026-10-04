@@ -72,6 +72,8 @@ For additional interpretation on the dollar scale, the test RMSE is approximatel
 
 Because the 47-feature design contains exact linear dependencies, the individual OLS coefficients are not uniquely identified. The OLS prediction metrics remain valid, while Ridge with α = 0.60 is used as a stable reference for coefficient interpretation.
 
+
+### Optional current-property comparison
 The optional application uses 124 N Franklin Ave, Ames, IA 50014. This property is particularly useful because its April 2008 sale appears as an exact observation in the supplied dataset and belongs to the held-out test set under random seed `20260928`.
 
 Using the original 2008 feature values:
